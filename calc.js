@@ -18,6 +18,12 @@ for(var i = 0; i < keys.length; i++) {
 			decimalAdded = false;
 		}
 		
+		else if(btnVal == 'bksp'){
+			var str = input.innerHTML;
+			if(str.length > 0){
+				input.innerHTML = str.substring(0, str.length-1);
+			}
+		}
 		// If eval key is pressed, calculate and display the result
 		else if(btnVal == '=') {
 			var equation = inputVal;
@@ -74,6 +80,9 @@ for(var i = 0; i < keys.length; i++) {
 			}
 		}
 		
+		else if(btnVal == 'sqrt'){
+			input.innerHTML += btnVal + '(';
+		}
 		// if any other key is pressed, just append it
 		else {
 			input.innerHTML += btnVal;
