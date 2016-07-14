@@ -83,3 +83,35 @@ for(var i = 0; i < keys.length; i++) {
 		e.preventDefault();
 	} 
 }
+
+//converting pixels to em
+function pxToEm(size_px, parent_size){
+	var result = size_px/parent_size;
+	return result;
+};
+
+//converting em to pixels
+function emToPx(size_em, parent_size){
+	var result = size_em * parent_size;
+	return result;
+};
+
+//converting pixels to %
+function pxToPercent(size_px, parent_size){
+	var result = (size_px/parent_size) * 100;
+	return result;
+};
+
+//dpi calculation
+//diagonal size must be in inches
+//width and length in pixels
+function calc_dpi(px_width, px_length, diagonal_size){
+	//calculate the diagonal resolution
+	var width_square = Math.pow(px_width, 2);
+	var length_square = Math.pow(px_length, 2);
+	var resolution = Math.sqrt(width_square + length_square);
+	//use diagonal resolution to calculate dpi
+	var dpi = resolution/diagonal_size;
+	return dpi;
+};
+
