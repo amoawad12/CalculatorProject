@@ -31,7 +31,7 @@ for(var i = 0; i < keys.length; i++) {
 				equation = equation.replace(/.$/, '');
 			
 			if(equation)
-				input.innerHTML = eval(equation);
+				input.innerHTML = math.eval(equation);
 				
 			decimalAdded = false;
 		}
@@ -107,9 +107,9 @@ function pxToPercent(size_px, parent_size){
 //width and length in pixels
 function calc_dpi(px_width, px_length, diagonal_size){
 	//calculate the diagonal resolution
-	var width_square = Math.pow(px_width, 2);
-	var length_square = Math.pow(px_length, 2);
-	var resolution = Math.sqrt(width_square + length_square);
+	var width_square = math.pow(px_width, 2);
+	var length_square = math.pow(px_length, 2);
+	var resolution = math.sqrt(width_square + length_square);
 	//use diagonal resolution to calculate dpi
 	var dpi = resolution/diagonal_size;
 	return dpi;
