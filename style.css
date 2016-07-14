@@ -20,7 +20,7 @@ html {
 
 /* Using box shadows to create 3D effects */
 #calculator {
-	width: 325px;
+	width: 400px;
 	height: auto;
 	
 	margin: 100px auto;
@@ -39,18 +39,20 @@ html {
 
 /* Inset shadow on the screen to create indent */
 .top .screen {
-	height: 40px;
-	width: 212px;
+	height: 80px;
+	width: 350px;
 	
-	float: right;
+	float: left;
 	
 	padding: 0 10px;
-	
+
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
 	box-shadow: inset 0px 4px rgba(0, 0, 0, 0.2);
 	
+	word-wrap: break-word;
 	/* Typography */
+	font-family: courier;
 	font-size: 17px;
 	line-height: 40px;
 	color: white;
@@ -60,24 +62,28 @@ html {
 }
 
 /* Clear floats */
-.keys, .top {overflow: hidden;}
+.keys, .top {
+	overflow: hidden;
+	padding-top:10px;
+	padding-left:5px;
+}
 
 /* Applying same to the keys */
-.keys span, .top span.clear {
+.keys span, .top span.clear, span.backspace {
 	float: left;
 	position: relative;
-	top: 0;
+	top: 0px;
 	
 	cursor: pointer;
 	
-	width: 66px;
+	width: 80px;
 	height: 36px;
 	
 	background: white;
 	border-radius: 3px;
 	box-shadow: 0px 4px rgba(0, 0, 0, 0.2);
 	
-	margin: 0 7px 11px 0;
+	margin: 0 7px 11px 1px;
 	
 	color: #888;
 	line-height: 36px;
@@ -94,16 +100,21 @@ html {
 /* style different type of keys (operators/evaluate/clear) differently */
 .keys span.operator {
 	background: #FFF0F5;
-	margin-right: 0;
+	
+}
+
+.keys span.other {
+	background: #ffffcc;
 }
 
 .keys span.eval {
 	background: #f1ff92;
 	box-shadow: 0px 4px #9da853;
 	color: #888e5f;
+	width: 97%;
 }
 
-.top span.clear {
+.top span.clear, span.backspace {
 	background: #ff9fa8;
 	box-shadow: 0px 4px #ff7c87;
 	color: white;
@@ -122,7 +133,7 @@ html {
 	color: #ffffff;
 }
 
-.top span.clear:hover {
+.top span.clear:hover, span.backspace:hover {
 	background: #f68991;
 	box-shadow: 0px 4px #d3545d;
 	color: white;
@@ -139,7 +150,7 @@ html {
 	top: 4px;
 }
 
-.top span.clear:active {
+.top span.clear:active, span.backspace:active {
 	top: 4px;
 	box-shadow: 0px 0px #d3545d;
 }
