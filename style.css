@@ -14,8 +14,21 @@
 html {
 	height: 100%;
 	background: white;
+	background-color: #ffcc66;
 	background: radial-gradient(circle, #fff 20%, #ccc);
 	background-size: cover;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+    display: table;
+    background-color: #ffcc66; 
+}
+.wrapper {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
 }
 
 /* Using box shadows to create 3D effects */
