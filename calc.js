@@ -35,7 +35,6 @@ for(var i = 0; i < keys.length; i++) {
 				
 			decimalAdded = false;
 		}
-		
 		// Basic functionality of the calculator is complete. But there are some problems like 
 		// 1. No two operators should be added consecutively.
 		// 2. The equation shouldn't start from an operator except minus
@@ -78,7 +77,6 @@ for(var i = 0; i < keys.length; i++) {
 		else {
 			input.innerHTML += btnVal;
 		}
-		
 		// prevent page jumps
 		e.preventDefault();
 	} 
