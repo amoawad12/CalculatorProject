@@ -2,15 +2,27 @@
 var keys = document.querySelectorAll('#calculator span');
 var operators = ['+', '-', 'x', '÷'];
 var decimalAdded = false;
+var pixelSize = 0;
+var parentPixelSize = 0;
+
+// These boooleans should be used to launch the appropriate handlers for the different functions.
+var pxToEmBool = false;
+var emToPxBool = false;
+var pxToPerbool = false;
+var DPIBool = false;
+
+
 
 // Add onclick event to all the keys and perform operations
 for(var i = 0; i < keys.length; i++) {
 	keys[i].onclick = function(e) {
-		// Get the input and button values
-		var input = document.querySelector('.screen');
-		var inputVal = input.innerHTML;
-		var btnVal = this.innerHTML;
-		
+        // Get the input and button values
+        var input = document.querySelector('.screen');
+        var prompt = document.querySelector('.promptScreen');
+        var inputVal = input.innerHTML;
+        var btnVal = this.innerHTML;
+        
+
 		// Now, just append the key values (btnValue) to the input string and finally use javascript's eval function to get the result
 		// If clear key is pressed, erase everything
 		if(btnVal == 'C') {
@@ -22,19 +34,30 @@ for(var i = 0; i < keys.length; i++) {
 		else if(btnVal == '=') {
 			var equation = inputVal;
 			var lastChar = equation[equation.length - 1];
+
+            if (pxToEmBool) {
+                handlePxToEm(prompt, input, inputVal);
+            }
+            
+            else {
+			     // Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
+			     equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
 			
-			// Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
-			equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
-			
-			// Final thing left to do is checking the last character of the equation. If it's an operator or a decimal, remove it
-			if(operators.indexOf(lastChar) > -1 || lastChar == '.')
-				equation = equation.replace(/.$/, '');
-			
-			if(equation)
-				input.innerHTML = math.eval(equation);
+			     // Final thing left to do is checking the last character of the equation. If it's an operator or a decimal, remove it
+			     if(operators.indexOf(lastChar) > -1 || lastChar == '.')
+				    equation = equation.replace(/.$/, '');
+			     if(equation)
+				    input.innerHTML = math.eval(equation);
+            }
+            
 				
 			decimalAdded = false;
 		}
+        
+        else if(btnVal == 'Px to Em') {
+            prompt.innerHTML = "Enter Pixel Size";
+            pxToEmBool = true;
+        }
 		// Basic functionality of the calculator is complete. But there are some problems like 
 		// 1. No two operators should be added consecutively.
 		// 2. The equation shouldn't start from an operator except minus
@@ -82,6 +105,7 @@ for(var i = 0; i < keys.length; i++) {
 	} 
 }
 
+
 //converting pixels to em
 function pxToEm(size_px, parent_size){
 	var result = size_px/parent_size;
@@ -112,4 +136,29 @@ function calc_dpi(px_width, px_length, diagonal_size){
 	var dpi = resolution/diagonal_size;
 	return dpi;
 }
+
+// Handles the actions needed to calculate the conversion from px to em. It needs the prompt,
+// input, and inputVal objects as arguments because these are defined within the scope of the
+// for loop.
+function handlePxToEm(prompt, input, inputVal) {
+    // These two condition check the prompt window which is only active if a function key is
+    // pressed. The values from the input is saved into the correspodning variables and 
+    // the prompt screen is changed. When the solution is found the prompt is cleared and
+    // and the answer is displayed on the input screen. Some padding is also changed since
+    // the strings are diferent lengths.
+    if (prompt.innerHTML.indexOf("Parent") == -1 && prompt.innerHTML.toString().length) {
+        pixelSize = parseInt(math.eval(inputVal));
+        prompt.innerHTML = 'Enter Parent Pixel Size';
+        document.getElementById("prompt").style.paddingTop = "5px";
+        input.innerHTML = "";
+    }
+    else if (prompt.innerHTML.indexOf("Parent") > 0) {
+        parentPixelSize = parseInt(math.eval(inputVal));
+        input.innerHTML = pxToEm(pixelSize, parentPixelSize);
+        document.getElementById("prompt").style.paddingTop = "10px";
+        prompt.innerHTML = '';
+        emToPxBool = false;
+    }
+}
+
 
