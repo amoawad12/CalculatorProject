@@ -2,8 +2,15 @@
 var keys = document.querySelectorAll('#calculator span');
 var operators = ['+', '-', 'x', '÷'];
 var decimalAdded = false;
+
+// Variables for the pxToEm and emToPx conversions
 var pixelSize = 0;
 var parentPixelSize = 0;
+
+// Variables for the dpi calculation.
+var width = 0;
+var height = 0;
+var diagonal = 0;
 
 // These boooleans should be used to launch the appropriate handlers for the different functions.
 var pxToEmBool = false;
@@ -42,6 +49,14 @@ for(var i = 0; i < keys.length; i++) {
 				handlePxToPer(prompt, input, inputVal);
 			}
             
+            else if (emToPxBool) {
+                handleEmToPx(prompt, input, inputVal);
+            }
+            
+            else if (DPIBool) {
+                handleDPI(prompt, input, inputVal);
+            }
+            
             else {
 			     // Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
 			     equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
@@ -57,7 +72,8 @@ for(var i = 0; i < keys.length; i++) {
 			decimalAdded = false;
 		}
         
-        else if(btnVal == 'Px to Em') {
+        // Set the pxToEmBool flag so the handler takes care of the calculation.
+        else if (btnVal == 'Px to Em') {
             prompt.innerHTML = "Enter Pixel Size";
             pxToEmBool = true;
         }
@@ -66,6 +82,18 @@ for(var i = 0; i < keys.length; i++) {
 			prompt.innerHTML = "Enter Pizel Size";
 			pxToPerbool = true;
 		}
+
+        
+        else if (btnVal == 'Em to Px') {
+            prompt.innerHTML = "Enter Pixel Size";
+            emToPxBool = true;
+        }
+        
+        else if (btnVal == "DPI") {
+            prompt.innerHTML = "Enter Width";
+            DPIBool = true;
+        }
+
 		// Basic functionality of the calculator is complete. But there are some problems like 
 		// 1. No two operators should be added consecutively.
 		// 2. The equation shouldn't start from an operator except minus
@@ -250,7 +278,50 @@ function handlePxToEm(prompt, input, inputVal) {
         prompt.innerHTML = '';
         //emToPxBool = false;
 		pxToEmBool = false;
+        pixelSize = 0;
+        parentPixelSize = 0;
     }
+}
+
+// This function essentially does the same thing as the one above the only difference being that it
+// calls a different helper function.
+function handleEmToPx(prompt, input, inputVal) {
+    if (prompt.innerHTML.indexOf("Parent") == -1 && prompt.innerHTML.toString().length) {
+        pixelSize = parseInt(math.eval(inputVal));
+        prompt.innerHTML = 'Enter Parent Pixel Size';
+        document.getElementById("prompt").style.paddingTop = "5px";
+        input.innerHTML = "";
+    }
+    else if (prompt.innerHTML.indexOf("Parent") > 0) {
+        parentPixelSize = parseInt(math.eval(inputVal));
+        input.innerHTML = emToPx(pixelSize, parentPixelSize);
+        document.getElementById("prompt").style.paddingTop = "10px";
+        prompt.innerHTML = '';
+        emToPxBool = false;
+        pixelSize = 0;
+        parentPixelSize = 0;
+    }
+}
+
+// Function handles the calculation for the DPI button.
+function handleDPI (prompt, input, inputVal) {
+    if (prompt.innerHTML.indexOf("Width") > 0) {
+        width = parseInt(math.eval(inputVal));
+        prompt.innerHTML = 'Enter Height';
+        input.innerHTML = '';
+    }
+    else if (prompt.innerHTML.indexOf("Height") > 0) {
+        height = parseInt(math.eval(inputVal));
+        prompt.innerHTML = 'Enter Diagonal';
+        input.innerHTML = '';
+    }
+    else if (prompt.innerHTML.indexOf("Diagonal") > 0) {
+        diagonal = parseInt(math.eval(inputVal));
+        prompt.innerHTML = '';
+        input.innerHTML = calc_dpi(width, height, diagonal);
+        DPIBool = false;
+    }
+    
 }
 
 function handlePxToPer(prompt, input, inputVal){
