@@ -38,7 +38,7 @@ for(var i = 0; i < keys.length; i++) {
             if (pxToEmBool) {
                 handlePxToEm(prompt, input, inputVal);
             }
-			if (pxToPerbool){
+			else if (pxToPerbool){
 				handlePxToPer(prompt, input, inputVal);
 			}
             
@@ -248,7 +248,8 @@ function handlePxToEm(prompt, input, inputVal) {
         input.innerHTML = pxToEm(pixelSize, parentPixelSize);
         document.getElementById("prompt").style.paddingTop = "10px";
         prompt.innerHTML = '';
-        emToPxBool = false;
+        //emToPxBool = false;
+		pxToEmBool = false;
     }
 }
 
