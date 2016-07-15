@@ -38,6 +38,9 @@ for(var i = 0; i < keys.length; i++) {
             if (pxToEmBool) {
                 handlePxToEm(prompt, input, inputVal);
             }
+			if (pxToPerbool){
+				handlePxToPer(prompt, input, inputVal);
+			}
             
             else {
 			     // Replace all instances of x and ÷ with * and / respectively. This can be done easily using regex and the 'g' tag which will replace all instances of the matched character/substring
@@ -58,6 +61,11 @@ for(var i = 0; i < keys.length; i++) {
             prompt.innerHTML = "Enter Pixel Size";
             pxToEmBool = true;
         }
+		
+		else if(btnVal == 'Px to %'){
+			prompt.innerHTML = "Enter Pizel Size";
+			pxToPerbool = true;
+		}
 		// Basic functionality of the calculator is complete. But there are some problems like 
 		// 1. No two operators should be added consecutively.
 		// 2. The equation shouldn't start from an operator except minus
@@ -108,33 +116,116 @@ for(var i = 0; i < keys.length; i++) {
 
 //converting pixels to em
 function pxToEm(size_px, parent_size){
-	var result = size_px/parent_size;
-	return result;
+	//checking if inputs are numbers
+	var size_check = isNum(size_px);
+	var parent_check = isNum(parent_size);
+	
+	if(size_check && parent_check)
+	{
+		//checking to see if numbers are positive
+		if(size_px > 0 && parent_size > 0)
+		{
+			var result = size_px/parent_size;
+			return result;
+		}
+		else
+		{
+			return "Values must be positive";
+		}
+	}
+	else
+	{
+		return "Input must be a number";
+	}
+	
 }
 
 //converting em to pixels
 function emToPx(size_em, parent_size){
-	var result = size_em * parent_size;
-	return result;
+	//checking if inputs are numbers
+	var size_check = isNum(size_em);
+	var parent_check = isNum(parent_size);
+	
+	if(size_check && parent_check)
+	{
+		//checking to see if numbers are positive
+		if(size_em > 0 && parent_size > 0)
+		{
+			var result = size_em * parent_size;
+			return result;
+		}
+		else
+		{
+			return "Values must be positive";
+		}
+	}
+	else
+	{
+		return "Input must be a number";
+	}
 }
 
 //converting pixels to %
 function pxToPercent(size_px, parent_size){
-	var result = (size_px/parent_size) * 100;
-	return result;
+	//checking if inputs are numbers
+	var size_check = isNum(size_px);
+	var parent_check = isNum(parent_size);
+	
+	if(size_check && parent_check)
+	{
+		//checking to see if numbers are positive
+		if(size_px > 0 && parent_size > 0)
+		{
+			var result = (size_px/parent_size) * 100;
+			return result;
+		}
+		else
+		{
+			return "Values must be positive";
+		}
+	}
+	else
+	{
+		return "Input must be a number";
+	}
 }
 
 //dpi calculation
 //diagonal size must be in inches
 //width and length in pixels
 function calc_dpi(px_width, px_length, diagonal_size){
-	//calculate the diagonal resolution
-	var width_square = math.pow(px_width, 2);
-	var length_square = math.pow(px_length, 2);
-	var resolution = math.sqrt(width_square + length_square);
-	//use diagonal resolution to calculate dpi
-	var dpi = resolution/diagonal_size;
-	return dpi;
+	//checking if the inputs are numbers
+	var width_check = isNum(px_width);
+	var length_check = isNum(px_length);
+	var diagonal_check = isNum(diagonal_size);
+	
+	if(width_check && length_check && diagonal_check)
+	{
+		//checking to see if numbers are positive
+		if(px_width > 0 && px_length > 0 && diagonal_size > 0)
+		{
+			//calculate the diagonal resolution
+			var width_square = math.pow(px_width, 2);
+			var length_square = math.pow(px_length, 2);
+			var resolution = math.sqrt(width_square + length_square);
+			//use diagonal resolution to calculate dpi
+			var dpi = resolution/diagonal_size;
+			return dpi;
+		}
+		else
+		{
+			return "Values must be positive";
+		}
+	}
+	else
+	{
+		return "Input must be a number";
+	}
+}
+
+//function to verify whether the variables are numbers
+function isNum(num){
+	return !isNaN(parseFloat(num)) && isFinite(num);
 }
 
 // Handles the actions needed to calculate the conversion from px to em. It needs the prompt,
@@ -159,6 +250,22 @@ function handlePxToEm(prompt, input, inputVal) {
         prompt.innerHTML = '';
         emToPxBool = false;
     }
+}
+
+function handlePxToPer(prompt, input, inputVal){
+	if(prompt.innerHTML.indexOf("Parent") == -1 && prompt.innerHTML.toString().length){
+		pixelSize = parseInt(math.eval(inputVal));
+		prompt.innerHTML = 'Enter Parent Pixel Size';
+		document.getElementById("prompt").style.paddingTop = "5px";
+        input.innerHTML = "";
+	}
+	else if(prompt.innerHTML.indexOf("Parent") > 0){
+		parentPixelSize = parseInt(math.eval(inputVal));
+		input.innerHTML = pxToPercent(pixelSize, parentPixelSize);
+		document.getElementById("prompt").style.paddingTop = "10px";
+        prompt.innerHTML = '';
+        pxToPerbool = false;
+	}
 }
 
 
